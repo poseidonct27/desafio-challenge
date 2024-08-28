@@ -2,6 +2,12 @@
 <h1 align="center">🔐 Encriptador de Texto </h1>
 </div>
 
+<p align="left">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=css,html,js,&perline=12" />
+  </a>
+</p>
+
 ## Reglas de Encriptacion
 - La letra "a" es convertida en "tnw"
 - La letra "e" es convertida en "kfr"
