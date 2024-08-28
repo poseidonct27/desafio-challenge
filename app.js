@@ -1,202 +1,141 @@
+// Funcion para encriptar el texto
 
-/// encriptar el texto
+function clickEncriptar() {
+    let textoOriginal = document.querySelector(".txtInput").value.toLowerCase();
 
-function clickEncriptar (){
+    let textoEncriptado = "";
 
-    let txtInput = document.querySelector(".txtInput").value.toLowerCase();
-    console.log(txtInput);
-
-    let newTextInput ="";
-    for (const char of txtInput) {
-        switch(char){
-            case "a":
-                newTextInput += "ai";
-                break;
-            case "e":
-                newTextInput += "enter";
-                break;
-            case "i":
-                newTextInput += "imes";
-                break;
-            case "o":
-                newTextInput += "ober";
-                break;
-            case "u":
-                newTextInput += "ufat";
-                break;
-            default:
-                newTextInput += char;
-                break;
-        }   
+    // Recorrer cada letra del texto original
+    for (let letra of textoOriginal) {
+        if (letra === "a") {
+            textoEncriptado += "tnw";
+        } else if (letra === "e") {
+            textoEncriptado += "kfr";
+        } else if (letra === "i") {
+            textoEncriptado += "mdg";
+        } else if (letra === "o") {
+            textoEncriptado += "jrx";
+        } else if (letra === "u") {
+            textoEncriptado += "lzh";
+        } else {
+            textoEncriptado += letra; // Si no es vocal, agregar la letra tal cual
+        }
     }
-    console.log(newTextInput);
 
-    incrustarTextoParaMostrar(newTextInput);
-
-}   
-
-
-/// desencriptar el texto
-
-function clickDesencriptar (){
-    let textoEncriptado = document.querySelector(".txtInput").value.toLowerCase();
-
-
-    let palabrasAReemplazar  = ["ai","enter","imes","ober","ufat"];
-    let nuevasPalabras  = ["a","e","i","o","u"];
-
- 
-     for (let index = 0; index < palabrasAReemplazar.length; index++) {
-        console.log("antes--->" + textoEncriptado);
-         textoEncriptado = textoEncriptado.split(palabrasAReemplazar[index]);
-         console.log("despues del split --->" + textoEncriptado);
-
-         textoEncriptado = textoEncriptado.join(nuevasPalabras[index]);
-         console.log("despues del join --->" + textoEncriptado);
-     }
-
+    // Mostrar el texto encriptado
     incrustarTextoParaMostrar(textoEncriptado);
-
-
-
-
-}
-
-/// organizar el codigo 
-
-
-function ocultarSeccionImagen (){
-    let imagenOcultar = document.querySelector(".main_mostrar_datos_imagen");
-    if(imagenOcultar){
-        imagenOcultar.style.display = "none";
-        imagenOcultar.remove();
-    }
- 
-    let tituloOcultar = document.querySelector(".main_mostrar_datos_titulo");
-    if(tituloOcultar){
-        tituloOcultar.style.display= "none";
-        tituloOcultar.remove();
-    }
- 
-    let parrafoOcultar = document.querySelector(".main_intro_datos_parrafo");
-    if(parrafoOcultar){
-        parrafoOcultar.style.display= "none";
-        parrafoOcultar.remove();
-    }
 }
 
 
+// Funcion para desencriptar el texto
+function clickDesencriptar() {
+    let textoEncriptado = document.querySelector(".txtInput").value.toLowerCase(); // Obtener el texto del area de texto y convertirlo a minusculas
 
-function incrustarTextoParaMostrar(texto){
+    // Reemplazar las cadenas encriptadas por las vocales originales
+    textoEncriptado = textoEncriptado.replace(/tnw/g, "a");
+    textoEncriptado = textoEncriptado.replace(/kfr/g, "e");
+    textoEncriptado = textoEncriptado.replace(/mdg/g, "i");
+    textoEncriptado = textoEncriptado.replace(/jrx/g, "o");
+    textoEncriptado = textoEncriptado.replace(/lzh/g, "u");
 
-    ocultarSeccionImagen ();
+    incrustarTextoParaMostrar(textoEncriptado); // Mostrar el texto desencriptado
+}
 
-    let contenedorTextoParaMostrar = document.querySelector(".main_intro_datos_container_texto");
-    let contenedorMostrarDatos = document.querySelector(".main_mostrar_datos");
+// Funcion para ocultar la imagen y mostrar los datos en pantalla
+function ocultarSeccionImagen() {
+    const elementos = [
+        ".main_mostrar_datos_imagen",
+        ".main_mostrar_datos_titulo",
+        ".main_intro_datos_parrafo"
+    ];
 
-    let parrafoTextoParaMostrar ;
-    let botonCopiarParaMostrar ; 
+    elementos.forEach(selector => {
+        const elemento = document.querySelector(selector);
+        if (elemento) {
+            elemento.style.display = "none";
+            elemento.remove();
+        }
+    });
+}
 
-    if(!parrafoTextoParaMostrar && !botonCopiarParaMostrar ){
-        parrafoTextoParaMostrar = document.createElement("p");
-        botonCopiarParaMostrar  = document.createElement("button");
+// Funcion para mostrar texto en pantalla
+function incrustarTextoParaMostrar(texto) {
+    // Ocultar y eliminar elementos previos
+    ocultarSeccionImagen();
+
+    // Obtener el contenedor donde se mostrara el texto y el boton
+    let contenedorTexto = document.querySelector(".main_intro_datos_container_texto");
+
+    // Crear el parrafo y el boton si no existen
+    let parrafo = contenedorTexto.querySelector("p");
+    let boton = contenedorTexto.querySelector("button");
+
+    if (!parrafo) {
+        parrafo = document.createElement("p");  // Crear un nuevo parrafo
+        contenedorTexto.appendChild(parrafo);   // Agregar el parrafo al contenedor
     }
-    
-    if(!contenedorTextoParaMostrar.contains(document.querySelector("p")) 
-        && !contenedorTextoParaMostrar.contains(document.querySelector("button"))){
-        contenedorTextoParaMostrar.append(parrafoTextoParaMostrar);
-        contenedorTextoParaMostrar.append(botonCopiarParaMostrar);
-        
-         parrafoTextoParaMostrar.innerHTML = texto;
-         botonCopiarParaMostrar.innerHTML = "Copiar";
-    }else{
-        document.querySelector("p").innerHTML=texto;
+
+    if (!boton) {
+        boton = document.createElement("button"); // Crear un nuevo boton
+        boton.textContent = "Copiar";             // Establecer el texto del boton
+        contenedorTexto.appendChild(boton);       // Agregar el boton al contenedor
     }
 
+    // Actualizar el texto del parrafo
+    parrafo.textContent = texto;
 
-
-    darEstiloEtiquetasCreadas(parrafoTextoParaMostrar, botonCopiarParaMostrar, contenedorMostrarDatos, contenedorTextoParaMostrar );
-   
+    // Aplicar estilos (asumiendo que la funcion existe)
+    darEstiloEtiquetasCreadas(parrafo, boton, document.querySelector(".main_mostrar_datos"), contenedorTexto);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Ajustar la altura del textarea según su contenido
     const textarea = document.getElementById('multiline-input');
 
     textarea.addEventListener('input', function () {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
+        textarea.style.height = 'auto';                   // Reiniciar la altura
+        textarea.style.height = textarea.scrollHeight + 'px'; // Ajustar la altura
     });
 
+    // Ajustar la altura inicial cuando la pagina se carga
     textarea.style.height = 'auto';
-    textarea.style.height = (textarea.scrollHeight) + 'px';
+    textarea.style.height = textarea.scrollHeight + 'px';
 });
 
-
-/// estilos de etiqueta
-
+//funcion dar estilo a las etiquetas creadas
 function darEstiloEtiquetasCreadas(parrafo, boton, contenedorGeneral, contenedorTexto ){
-     boton.style = 
-     "width: 100% ; height: 67px ; padding: 24px ;border: 1px solid #0A3871 ;"+
-     "border-radius: 24px ; color: #0A3871 ; background-color: #D8DFE8;";
-     boton.setAttribute("onclick","copiarTexto(this)");
+    boton.style = 
+    "width: 100% ; height: 67px ; padding: 24px ;border: 1px solid #0A3871 ;"+
+    "border-radius: 24px ; color: #0A3871 ; background-color: #D8DFE8;";
+    boton.setAttribute("onclick","copiarTexto(this)");
 
-     contenedorGeneral.style="display : block " ;
+    contenedorGeneral.style="display : block " ;
 
-     contenedorTexto.style = "margin: 0 ; padding : 11% ; height : 100% ;justify-content:space-between";
+    contenedorTexto.style = "margin: 0 ; padding : 11% ; height : 100% ;justify-content:space-between";
 
-     parrafo.style ="font-size: 2rem ; width: 100%  ; overflow: auto;  word-wrap: break-word; ";
-     parrafo.setAttribute("class","texto-para-copiar")
+    parrafo.style ="font-size: 2rem ; width: 100%  ; overflow: auto;  word-wrap: break-word; ";
+    parrafo.setAttribute("class","texto-para-copiar")
 }
 
-
+//funcion para copiar el texto 
 function copiarTexto(boton){
 
-     const textToCopy = document.querySelector('.texto-para-copiar').innerHTML;
+    const textToCopy = document.querySelector('.texto-para-copiar').innerHTML;
 
-     navigator.clipboard.writeText(textToCopy)
-         .then(() => {
-                boton.innerHTML="Copiado";
-                boton.style="width: 100% ; height: 67px ; padding: 24px ;border: 1px solid #0A3871 ;"+
-                                 "border-radius: 24px ; color: #0A3871 ; background-color: #8ff799;";
-                setTimeout(() => {
-                    boton.innerHTML = "Copiar";
-                    boton.style="width: 100% ; height: 67px ; padding: 24px ;border: 1px solid #0A3871 ;"+
-                                 "border-radius: 24px ; color: #0A3871 ; background-color: #D8DFE8;"
-                }, 2000); 
-            })
-         .catch(err => {
-             // Muestra un mensaje de error
-             console.error('Error al copiar el texto: ', err);
-             alert('Error al copiar el texto');
-         });
-}
-
-
-///  split y join
-
-function replaceWords(str, wordsToReplace, newWords) {
-    if (wordsToReplace.length !== newWords.length) {
-        throw new Error("Los arrays wordsToReplace y newWords deben tener la misma longitud");
-    }
-
-    for (let i = 0; i < wordsToReplace.length; i++) {
-        str = str.split(wordsToReplace[i]).join(newWords[i]);
-    }
-
-    return str;
-}
-
-/// regex y replace
-
-function reemplazoRegex(str, wordsToReplace, newWords, mapaDeReemplazo){
-    for (let i = 0; i < palabrasAReemplazar.length; i++) {
-        mapaDeReemplazo[palabrasAReemplazar[i]] = nuevasPalabras[i];
-        console.log(mapaDeReemplazo[palabrasAReemplazar[i]] = nuevasPalabras[i]);
-        
-
-    }
-    let regex = new RegExp(palabrasAReemplazar.join('|'), 'g');
-    let newStr = textoEncriptado.replace(regex, (matched) => mapaDeReemplazo[matched]);
-
-    return newStr;
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+               boton.innerHTML="Copiado";
+               boton.style="width: 100% ; height: 67px ; padding: 24px ;border: 1px solid #0A3871 ;"+
+                                "border-radius: 24px ; color: #0A3871 ; background-color: #8ff799;";
+               setTimeout(() => {
+                   boton.innerHTML = "Copiar";
+                   boton.style="width: 100% ; height: 67px ; padding: 24px ;border: 1px solid #0A3871 ;"+
+                                "border-radius: 24px ; color: #0A3871 ; background-color: #D8DFE8;"
+               }, 2000); 
+           })
+        .catch(err => {
+            // Muestra un mensaje de error
+            console.error('Error al copiar el texto: ', err);
+            alert('Error al copiar el texto');
+        });
 }
